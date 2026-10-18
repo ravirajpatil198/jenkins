@@ -1,31 +1,40 @@
 pipeline {
     agent any
-    stages{
-        stage("checkout"){
-            steps{
-                git branch: 'main', url: 'https://github.com/ravirajpatil198/jenkins.git'
+    stages {
+        // NOTE: The "checkout" stage is removed because Jenkins Multibranch 
+        // automatically checks out the correct branch for you.
+        
+        stage("build") {
+            steps {
+                echo "build success"
             }
         }
-        stage("build"){
-            steps{
-                echo "build sucess"
-            }
-        }
-        stage("test"){
-            steps{
+        stage("test") {
+            steps {
                 echo "test complete"
             }
         }
-        stage("deploy"){
-            steps{
-                echo "deploy done"
+        stage("deploy") {
+            steps {
+                script {
+                    // Dynamically alter deployment logic based on the active branch
+                    if (env.BRANCH_NAME == 'main') {
+                        echo "deploy done to Production"
+                    } else if (env.BRANCH_NAME == 'staging') {
+                        echo "deploy done to Staging"
+                    } else if (env.BRANCH_NAME == 'dev') {
+                        echo "deploy done to Development"
+                    } else {
+                        echo "deploy skipped: unknown branch ${env.BRANCH_NAME}"
+                    }
+                }
             }
         }
     }
-   post{
-       always{
-           echo "prod -pip sucess"
-       }
-   }
-    
+    post {
+        always {
+            // Dynamically prints the current environment in the logs
+            echo "${env.BRANCH_NAME} - pip success"
+        }
+    }
 }
