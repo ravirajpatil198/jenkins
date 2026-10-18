@@ -24,7 +24,7 @@ pipeline {
     }
    post{
        always{
-           echo "prod pip sucess"
+           echo "prod -pip sucess"
        }
    }
     
