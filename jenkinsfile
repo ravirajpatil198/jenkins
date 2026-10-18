@@ -1,1 +1,31 @@
-
+pipeline {
+    agent any
+    stages{
+        stage("checkout"){
+            steps{
+                git branch: 'main', url: 'https://github.com/ravirajpatil198/jenkins.git'
+            }
+        }
+        stage("build"){
+            steps{
+                echo "build sucess"
+            }
+        }
+        stage("test"){
+            steps{
+                echo "test complete"
+            }
+        }
+        stage("deploy"){
+            steps{
+                echo "deploy done"
+            }
+        }
+    }
+   post{
+       always{
+           echo "prod pip sucess"
+       }
+   }
+    
+}
